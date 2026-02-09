@@ -1,0 +1,83 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>موقع الفتاوى الإسلامية</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h1>📖 موقع الفتاوى الإسلامية</h1>
+  <p>للاستئناس – الفتوى من أهل العلم</p>
+</header>
+
+<nav>
+  <button onclick="showSection('fatwas')">الفتاوى</button>
+  <button onclick="showSection('ai')">الذكاء الاصطناعي</button>
+</nav>
+
+<section id="fatwas">
+  <h2>🔍 الفتاوى</h2>
+
+  <input type="text" id="searchInput" placeholder="قلب على فتوى..." onkeyup="searchFatwa()" />
+
+  <div class="categories">
+    <button onclick="filterCategory('all')">الكل</button>
+    <button onclick="filterCategory('salat')">الصلاة</button>
+    <button onclick="filterCategory('siyam')">الصيام</button>
+    <button onclick="filterCategory('fiqh')">فقه عام</button>
+  </div>
+
+  <div id="fatwaList"></div>
+</section>
+
+<section id="ai" style="display:none;">
+  <h2>🤖 اسأل الذكاء الاصطناعي</h2>
+  <p class="note">تنبيه: الجواب آلي للاستئناس فقط</p>
+  <textarea id="question" placeholder="اكتب سؤالك هنا..."></textarea>
+  <button onclick="answerQuestion()">إرسال</button>
+  <p id="answer"></p>
+</section>
+
+<footer>© 2026 موقع الفتاوى الإسلامية</footer>
+
+<script src="js/fatwas.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
+
+/* ========================= */
+/* css/style.css */
+/* ========================= */
+body{font-family:Arial;background:#f4f6f3;margin:0}
+header,footer{background:#1e6f5c;color:#fff;text-align:center;padding:15px}
+nav{text-align:center;background:#289672;padding:10px}
+nav button,.categories button{margin:5px;padding:8px 15px;border:none;cursor:pointer}
+section{padding:20px}
+.fatwa{background:#fff;padding:15px;margin:10px 0;border-radius:8px}
+textarea,input{width:100%;padding:10px;margin:10px 0}
+.note{color:#b00}
+
+/* ========================= */
+/* js/fatwas.js */
+/* ========================= */
+const fatwas=[
+ {category:'salat',q:'ما حكم الصلاة بدون وضوء؟',a:'لا تصح الصلاة بدون وضوء.',src:'فتاوى العلماء'},
+ {category:'siyam',q:'هل يجوز الإفطار في رمضان للمريض؟',a:'نعم إذا كان الصوم يضرّه.',src:'فقه الصيام'},
+ {category:'fiqh',q:'ما حكم البيع بالتقسيط؟',a:'جائز بشروط دون ربا.',src:'فقه المعاملات'}
+];
+
+/* ========================= */
+/* js/main.js */
+/* ========================= */
+function showSection(id){document.getElementById('fatwas').style.display='none';document.getElementById('ai').style.display='none';document.getElementById(id).style.display='block'}
+
+function renderFatwas(list){const c=document.getElementById('fatwaList');c.innerHTML='';list.forEach(f=>{c.innerHTML+=`<div class="fatwa"><strong>سؤال:</strong> ${f.q}<br><strong>الجواب:</strong> ${f.a}<br><em>${f.src}</em></div>`})}
+renderFatwas(fatwas)
+
+function searchFatwa(){const v=document.getElementById('searchInput').value.toLowerCase();renderFatwas(fatwas.filter(f=>f.q.toLowerCase().includes(v)||f.a.toLowerCase().includes(v)))}
+function filterCategory(cat){renderFatwas(cat==='all'?fatwas:fatwas.filter(f=>f.category===cat))}
+function answerQuestion(){document.getElementById('answer').innerText='سيتم ربط الذكاء الاصطناعي لاحقًا'}
+
